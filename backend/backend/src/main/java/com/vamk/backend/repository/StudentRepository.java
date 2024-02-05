@@ -18,5 +18,7 @@ public class StudentRepository {
         throw new UnsupportedOperationException();
     }
 
-
+    public CompletableFuture<Void> update(Student student) {
+        throw new UnsupportedOperationException();
+    }
 }
