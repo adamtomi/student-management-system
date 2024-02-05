@@ -1,4 +1,4 @@
-package com.tomushimano.backend;
+package com.vamk.backend;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;

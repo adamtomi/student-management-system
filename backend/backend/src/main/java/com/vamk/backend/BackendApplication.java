@@ -1,4 +1,4 @@
-package com.tomushimano.backend;
+package com.vamk.backend;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
