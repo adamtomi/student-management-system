@@ -3,6 +3,7 @@ package com.vamk.backend.controller;
 import com.vamk.backend.model.Course;
 import com.vamk.backend.model.Student;
 import com.vamk.backend.repository.StudentRepository;
+import com.vamk.backend.util.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -22,33 +23,36 @@ public class StudentController {
         this.studentRepository = studentRepository;
     }
 
-    @GetMapping("api/students")
-    public Set<Student> getStudents() {
-        return Set.of();
+    @GetMapping("/api/students")
+    public Response getStudents() {
+        return Response.success(200).withData(Set.of()).build();
     }
 
     @GetMapping("/api/students/{id}")
-    public Student getStudent(@PathVariable String id) {
-        return new Student(UUID.randomUUID(), "test@test.com", "John", "Doe");
+    public Response getStudent(@PathVariable String id) {
+        Student dummy = new Student(UUID.randomUUID(), "test@test.com", "John", "Doe");
+        return Response.success(200).withData(dummy).build();
     }
 
     @PostMapping("/api/students/{id}")
-    public void updateStudent(
+    public Response updateStudent(
             @PathVariable String id,
             @RequestBody String emailAddress,
             @RequestBody String firstName,
             @RequestBody String lastName
     ) {
 
+        return Response.success(200).build();
     }
 
     @GetMapping("/api/course/{id}")
-    public Course getCourse(@PathVariable String id) {
-        throw new UnsupportedOperationException();
+    public Response getCourse(@PathVariable String id) {
+        Course dummy = new Course(UUID.randomUUID(), "Test", "John Doe");
+        return Response.success(200).withData(dummy).build();
     }
 
     @PostMapping("/api/course/{id}")
-    public void updateCourse(@PathVariable String id, @RequestBody String name, @RequestBody String teacher) {
-
+    public Response updateCourse(@PathVariable String id, @RequestBody String name, @RequestBody String teacher) {
+        return Response.success(200).build();
     }
 }
