@@ -1,6 +1,6 @@
 import { ChakraProvider } from '@chakra-ui/react'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
-import { StudentManagement } from './components/StudentManagement.tsx'
+import { DashboardScreen } from './screens/DashboardScreen.tsx'
 
 export default function App() {
   const queryClient = new QueryClient({
@@ -14,7 +14,7 @@ export default function App() {
   return (
     <QueryClientProvider client={queryClient}>
       <ChakraProvider>
-        <StudentManagement />
+        <DashboardScreen />
       </ChakraProvider>
     </QueryClientProvider>
   )
