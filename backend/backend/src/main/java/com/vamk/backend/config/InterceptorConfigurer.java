@@ -1,7 +1,6 @@
 package com.vamk.backend.config;
 
 import com.vamk.backend.interceptor.RequestLogger;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
@@ -9,17 +8,11 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 @EnableWebMvc
 @Configuration
-public class WebConfig implements WebMvcConfigurer {
-    private final RequestLogger requestLogger;
-
-    @Autowired
-    public WebConfig(RequestLogger requestLogger) {
-        this.requestLogger = requestLogger;
-    }
+public class InterceptorConfigurer implements WebMvcConfigurer {
 
     // Register interceptors
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
-        registry.addInterceptor(this.requestLogger);
+        registry.addInterceptor(new RequestLogger());
     }
 }
