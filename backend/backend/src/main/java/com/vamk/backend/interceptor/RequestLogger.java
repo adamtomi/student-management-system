@@ -22,6 +22,14 @@ public final class RequestLogger implements HandlerInterceptor {
     private static final String OUT_FORMAT = "%s %s -> %s";
 
     static {
+        /*
+         * Select the appropriate logging level based on
+         * the response status code.
+         *
+         * Success (2xx)      -> INFO
+         * Client error (4xx) -> WARN
+         * Server error (5xx) -> ERROR
+         */
         LOG_ACTION = (status, msg) -> {
             if (status < 300) {
                 LOGGER.info(msg);
@@ -35,8 +43,8 @@ public final class RequestLogger implements HandlerInterceptor {
 
     @Override
     public void postHandle(HttpServletRequest request, HttpServletResponse response, Object handler, ModelAndView modelAndView) {
-        int status = response.getStatus();
+        // Format the message
         String message = OUT_FORMAT.formatted(request.getMethod(), request.getRequestURI(), response.getStatus());
-        LOG_ACTION.accept(status, message);
+        LOG_ACTION.accept(response.getStatus(), message);
     }
 }
