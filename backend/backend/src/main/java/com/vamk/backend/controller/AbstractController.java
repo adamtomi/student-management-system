@@ -1,7 +1,7 @@
 package com.vamk.backend.controller;
 
-import com.vamk.backend.util.response.Response;
 import org.slf4j.Logger;
+import org.springframework.http.ResponseEntity;
 
 import java.util.function.Supplier;
 
@@ -14,7 +14,7 @@ public abstract class AbstractController {
         this.logger = logger;
     }
 
-    protected Response wrap(Supplier<Response> generator) {
+    protected ResponseEntity<?> wrap(Supplier<ResponseEntity<?>> generator) {
         try {
             return generator.get();
         } catch (Exception ex) {

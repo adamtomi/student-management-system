@@ -1,25 +1,36 @@
 package com.vamk.backend.util.response;
 
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+
+import static com.vamk.backend.util.response.ResponseBody.failure;
+import static com.vamk.backend.util.response.ResponseBody.success;
+
 public final class CommonResponses {
-    private static final Response INTERNAL_SERVER_ERROR = Response.failure(500)
-            .withMessage("An unexpected server error occurred.")
-            .build();
+    private static final ResponseEntity<?> INTERNAL_SERVER_ERROR = ResponseEntity.internalServerError()
+            .body(failure("An unexpected server error occurred"));
 
     private CommonResponses() {}
 
-    public static Response internalServerError() {
+    public static ResponseEntity<?> internalServerError() {
         return INTERNAL_SERVER_ERROR;
     }
 
-    public static Response notFound(String type, String id) {
-        return Response.failure(404)
-                .withMessage("Resource '%s' with '%s' was not found.".formatted(type, id))
-                .build();
+    public static ResponseEntity<?> ok(Object data) {
+        return ResponseEntity.ok(success(data));
     }
 
-    public static Response illegalUuid(String id) {
-        return Response.failure(400)
-                .withMessage("The provided uuid ('%s') is not valid".formatted(id))
-                .build();
+    public static ResponseEntity<?> ok() {
+        return ok(null);
+    }
+
+    public static ResponseEntity<?> illegalUuid(String id) {
+        return ResponseEntity.badRequest()
+                .body(failure("The provided uuid ('%s') is invalid.".formatted(id)));
+    }
+
+    public static ResponseEntity<?> notFound(String type, String id) {
+        return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                .body(failure("Resource '%s' with '%s' was not found.".formatted(type, id)));
     }
 }

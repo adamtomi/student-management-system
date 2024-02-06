@@ -13,8 +13,7 @@ import java.util.UUID;
 public class StudentRepository {
 
     public Iterable<Student> findAll() {
-        // return List.of();
-        throw new RuntimeException("Hello");
+        return List.of();
     }
 
     public Optional<Student> findById(UUID uuid) {

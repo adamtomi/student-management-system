@@ -4,9 +4,9 @@ import com.vamk.backend.model.Course;
 import com.vamk.backend.model.Student;
 import com.vamk.backend.repository.StudentRepository;
 import com.vamk.backend.util.CollectionUtil;
-import com.vamk.backend.util.response.Response;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -20,6 +20,7 @@ import java.util.UUID;
 
 import static com.vamk.backend.util.response.CommonResponses.illegalUuid;
 import static com.vamk.backend.util.response.CommonResponses.notFound;
+import static com.vamk.backend.util.response.CommonResponses.ok;
 
 @RestController
 public class StudentController extends AbstractController {
@@ -32,17 +33,15 @@ public class StudentController extends AbstractController {
     }
 
     @GetMapping("/api/students")
-    public Response getStudents() {
+    public ResponseEntity<?> getStudents() {
         return wrap(() -> {
             Set<Student> students = CollectionUtil.fromIterable(this.studentRepository.findAll(), HashSet::new);
-            return Response.success(200).withData(students).build();
+            return ok(students);
         });
-        /*Set<Student> students = CollectionUtil.fromIterable(this.studentRepository.findAll(), HashSet::new);
-        return Response.success(200).withData(students).build();*/
     }
 
     @GetMapping("/api/students/{id}")
-    public Response getStudent(@PathVariable String id) {
+    public ResponseEntity<?> getStudent(@PathVariable String id) {
         return wrap(() -> {
             UUID uuid;
             try {
@@ -52,30 +51,31 @@ public class StudentController extends AbstractController {
             }
 
             Optional<Student> student = this.studentRepository.findById(uuid);
-            return student.map(x -> Response.success(200).withData(x).build())
-                    .orElseGet(() -> notFound("student", id));
+            return student.isEmpty()
+                    ? notFound("student", id)
+                    : ok(student);
         });
     }
 
     @PostMapping("/api/students/{id}")
-    public Response updateStudent(
+    public ResponseEntity<?> updateStudent(
             @PathVariable String id,
             @RequestBody String emailAddress,
             @RequestBody String firstName,
             @RequestBody String lastName
     ) {
 
-        return Response.success(200).build();
+        return ok();
     }
 
     @GetMapping("/api/course/{id}")
-    public Response getCourse(@PathVariable String id) {
+    public ResponseEntity<?> getCourse(@PathVariable String id) {
         Course dummy = new Course(UUID.randomUUID(), "Test", "John Doe");
-        return Response.success(200).withData(dummy).build();
+        return ok(dummy);
     }
 
     @PostMapping("/api/course/{id}")
-    public Response updateCourse(@PathVariable String id, @RequestBody String name, @RequestBody String teacher) {
-        return Response.success(200).build();
+    public ResponseEntity<?> updateCourse(@PathVariable String id, @RequestBody String name, @RequestBody String teacher) {
+        return ok();
     }
 }
