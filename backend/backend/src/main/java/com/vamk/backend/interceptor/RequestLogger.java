@@ -8,6 +8,8 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
 
+import java.util.function.BiConsumer;
+
 /*
  * This interceptor is responsible for logging each request
  * (formatted as <method> <uri> -> <response status>) to the
@@ -16,10 +18,25 @@ import org.springframework.web.servlet.ModelAndView;
 @Component
 public final class RequestLogger implements HandlerInterceptor {
     private static final Logger LOGGER = LoggerFactory.getLogger(RequestLogger.class);
+    private static final BiConsumer<Integer, String> LOG_ACTION;
     private static final String OUT_FORMAT = "%s %s -> %s";
+
+    static {
+        LOG_ACTION = (status, msg) -> {
+            if (status < 300) {
+                LOGGER.info(msg);
+            } else if (status < 500) {
+                LOGGER.warn(msg);
+            } else {
+                LOGGER.error(msg);
+            }
+        };
+    }
 
     @Override
     public void postHandle(HttpServletRequest request, HttpServletResponse response, Object handler, ModelAndView modelAndView) {
-        LOGGER.info(OUT_FORMAT.formatted(request.getMethod(), request.getRequestURI(), response.getStatus()));
+        int status = response.getStatus();
+        String message = OUT_FORMAT.formatted(request.getMethod(), request.getRequestURI(), response.getStatus());
+        LOG_ACTION.accept(status, message);
     }
 }

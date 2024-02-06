@@ -3,22 +3,21 @@ package com.vamk.backend.repository;
 import com.vamk.backend.model.Student;
 import org.springframework.stereotype.Repository;
 
-import java.util.Set;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
-import java.util.concurrent.CompletableFuture;
 
 @Repository
+// public interface StudentRepository extends CrudRepository<Student, UUID> {}
 public class StudentRepository {
 
-    public CompletableFuture<Set<Student>> getAll() {
-        throw new UnsupportedOperationException();
+    public Iterable<Student> findAll() {
+        // return List.of();
+        throw new RuntimeException("Hello");
     }
 
-    public CompletableFuture<Student> findById(UUID uniqueId) {
-        throw new UnsupportedOperationException();
-    }
-
-    public CompletableFuture<Void> update(Student student) {
-        throw new UnsupportedOperationException();
+    public Optional<Student> findById(UUID uuid) {
+        return Optional.empty();
     }
 }

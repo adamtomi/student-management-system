@@ -1,4 +1,4 @@
-package com.vamk.backend.util;
+package com.vamk.backend.util.response;
 
 import static java.util.Objects.requireNonNull;
 
