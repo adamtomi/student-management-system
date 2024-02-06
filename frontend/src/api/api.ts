@@ -1,21 +1,6 @@
 const BASE_URL = 'http://localhost:8080'
 
-interface BaseApiResponse {
-  success: boolean
-  status: number
-}
-
-interface ApiResponseSuccess<T> extends BaseApiResponse {
-  success: true
-  data: T
-}
-
-interface ApiResponseFailure extends BaseApiResponse {
-  success: false
-  message: string
-}
-
-export type ApiResponse<T> = ApiResponseSuccess<T> | ApiResponseFailure
+export type ApiResponse<Result extends object = Record<never, never>> = { success: boolean; message?: string } & Result
 
 export enum HttpMethod {
   GET = 'GET',
@@ -29,7 +14,7 @@ export interface FetchOptions {
   body?: Record<string, unknown>
 }
 
-export async function doFetch<Result = Record<string, unknown>>(options: FetchOptions): Promise<ApiResponse<Result>> {
+export async function doFetch<Result extends object = Record<never, never>>(options: FetchOptions): Promise<ApiResponse<Result>> {
   try {
     const { endpoint, method, body } = options
     const url = `${BASE_URL}${endpoint}`
@@ -43,6 +28,6 @@ export async function doFetch<Result = Record<string, unknown>>(options: FetchOp
     const errorStr = error instanceof Error ? error.message : JSON.stringify(error)
     console.error(`Fetch failed: ${errorStr}`)
 
-    return { success: false, status: 500, message: 'An unexpected error occurred.' } satisfies ApiResponseFailure
+    return { success: false, message: 'An unexpected error occurred.' } as ApiResponse<Result>
   }
 }
