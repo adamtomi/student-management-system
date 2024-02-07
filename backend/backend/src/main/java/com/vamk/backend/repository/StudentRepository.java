@@ -1,9 +1,8 @@
 package com.vamk.backend.repository;
 
 import com.vamk.backend.model.Student;
-import org.springframework.data.repository.CrudRepository;
+import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.UUID;
 
-
-public interface StudentRepository extends CrudRepository<Student, UUID> {}
+public interface StudentRepository extends JpaRepository<Student, UUID> {}

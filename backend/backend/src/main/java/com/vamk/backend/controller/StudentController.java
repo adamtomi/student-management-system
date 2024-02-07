@@ -3,7 +3,6 @@ package com.vamk.backend.controller;
 import com.vamk.backend.model.Course;
 import com.vamk.backend.model.Student;
 import com.vamk.backend.repository.StudentRepository;
-import com.vamk.backend.util.CollectionUtil;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -13,9 +12,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.HashSet;
 import java.util.Optional;
-import java.util.Set;
 import java.util.UUID;
 
 import static com.vamk.backend.util.response.CommonResponses.illegalUuid;
@@ -34,10 +31,7 @@ public class StudentController extends AbstractController {
 
     @GetMapping("/api/students")
     public ResponseEntity<?> getStudents() {
-        return wrap(() -> {
-            Set<Student> students = CollectionUtil.fromIterable(this.studentRepository.findAll(), HashSet::new);
-            return ok(students);
-        });
+        return wrap(() -> ok(this.studentRepository.findAll()));
     }
 
     @GetMapping("/api/students/{id}")
