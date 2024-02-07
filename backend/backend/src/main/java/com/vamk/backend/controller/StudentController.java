@@ -2,6 +2,7 @@ package com.vamk.backend.controller;
 
 import com.vamk.backend.model.Course;
 import com.vamk.backend.model.Student;
+import com.vamk.backend.repository.CourseRepository;
 import com.vamk.backend.repository.StudentRepository;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,11 +23,13 @@ import static com.vamk.backend.util.response.CommonResponses.ok;
 @RestController
 public class StudentController extends AbstractController {
     private final StudentRepository studentRepository;
+    private final CourseRepository courseRepository;
 
     @Autowired
-    public StudentController(StudentRepository studentRepository) {
+    public StudentController(StudentRepository studentRepository, CourseRepository courseRepository) {
         super(LoggerFactory.getLogger(StudentController.class));
         this.studentRepository = studentRepository;
+        this.courseRepository = courseRepository;
     }
 
     @GetMapping("/api/students")
@@ -47,7 +50,7 @@ public class StudentController extends AbstractController {
             Optional<Student> student = this.studentRepository.findById(uuid);
             return student.isEmpty()
                     ? notFound("student", id)
-                    : ok(student);
+                    : ok(student.get());
         });
     }
 
@@ -64,8 +67,19 @@ public class StudentController extends AbstractController {
 
     @GetMapping("/api/course/{id}")
     public ResponseEntity<?> getCourse(@PathVariable String id) {
-        Course dummy = new Course(UUID.randomUUID(), "Test", "John Doe");
-        return ok(dummy);
+        return wrap(() -> {
+            UUID uuid;
+            try {
+                uuid = UUID.fromString(id);
+            } catch (IllegalArgumentException ex) {
+                return illegalUuid(id);
+            }
+
+            Optional<Course> course = this.courseRepository.findById(uuid);
+            return course.isEmpty()
+                    ? notFound("course", id)
+                    : ok(course.get());
+        });
     }
 
     @PostMapping("/api/course/{id}")
