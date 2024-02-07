@@ -8,7 +8,7 @@ import static com.vamk.backend.util.response.ResponseBody.success;
 
 public final class CommonResponses {
     private static final ResponseEntity<?> INTERNAL_SERVER_ERROR = ResponseEntity.internalServerError()
-            .body(failure("An unexpected server error occurred"));
+            .body(failure("An unexpected server error occurred."));
 
     private CommonResponses() {}
 
@@ -31,6 +31,6 @@ public final class CommonResponses {
 
     public static ResponseEntity<?> notFound(String type, String id) {
         return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                .body(failure("Resource '%s' with '%s' was not found.".formatted(type, id)));
+                .body(failure("Resource '%s' with id '%s' was not found.".formatted(type, id)));
     }
 }
