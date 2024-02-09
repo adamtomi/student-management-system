@@ -33,14 +33,14 @@ public class InterceptorConfigurer implements WebMvcConfigurer {
 
     @Bean
     SecurityFilterChain filterChain(HttpSecurity security) throws Exception {
-        return security.authorizeHttpRequests(auth ->
+        return security/*.authorizeHttpRequests(auth ->
                 auth.requestMatchers("/api/course/", "POST")
                         .hasRole(Roles.ADMIN)
                         .requestMatchers("/api/students/", "POST")
                         .hasRole(Roles.ADMIN)
                         .requestMatchers("/api/*")
                         .hasAnyRole(Roles.ADMIN, Roles.STUDENT)
-        )
+        )*/
                 // .cors(new CorsConfigurer<>())
                 .csrf(AbstractHttpConfigurer::disable)
                 .httpBasic(Customizer.withDefaults())
