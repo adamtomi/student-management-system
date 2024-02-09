@@ -1,9 +1,7 @@
 package com.vamk.backend.controller;
 
-import com.vamk.backend.model.Course;
-import com.vamk.backend.model.Student;
-import com.vamk.backend.repository.CourseRepository;
-import com.vamk.backend.repository.StudentRepository;
+import com.vamk.backend.model.User;
+import com.vamk.backend.repository.UserRepository;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -22,19 +20,17 @@ import static com.vamk.backend.util.response.CommonResponses.ok;
 
 @RestController
 public class StudentController extends AbstractController {
-    private final StudentRepository studentRepository;
-    private final CourseRepository courseRepository;
+    private final UserRepository userRepository;
 
     @Autowired
-    public StudentController(StudentRepository studentRepository, CourseRepository courseRepository) {
+    public StudentController(UserRepository userRepository) {
         super(LoggerFactory.getLogger(StudentController.class));
-        this.studentRepository = studentRepository;
-        this.courseRepository = courseRepository;
+        this.userRepository = userRepository;
     }
 
     @GetMapping("/api/students")
     public ResponseEntity<?> getStudents() {
-        return wrap(() -> ok(this.studentRepository.findAll()));
+        return wrap(() -> ok(this.userRepository.findAll()));
     }
 
     @GetMapping("/api/students/{id}")
@@ -47,7 +43,7 @@ public class StudentController extends AbstractController {
                 return illegalUuid(id);
             }
 
-            Optional<Student> student = this.studentRepository.findById(uuid);
+            Optional<User> student = this.userRepository.findById(uuid);
             return student.isEmpty()
                     ? notFound("student", id)
                     : ok(student.get());
@@ -61,12 +57,6 @@ public class StudentController extends AbstractController {
             @RequestBody String firstName,
             @RequestBody String lastName
     ) {
-
-        return ok();
-    }
-
-    @GetMapping("/api/course/{id}")
-    public ResponseEntity<?> getCourse(@PathVariable String id) {
         return wrap(() -> {
             UUID uuid;
             try {
@@ -75,15 +65,16 @@ public class StudentController extends AbstractController {
                 return illegalUuid(id);
             }
 
-            Optional<Course> course = this.courseRepository.findById(uuid);
-            return course.isEmpty()
-                    ? notFound("course", id)
-                    : ok(course.get());
-        });
-    }
+            Optional<User> userOpt = this.userRepository.findById(uuid);
+            if (userOpt.isEmpty()) return notFound("user", id);
 
-    @PostMapping("/api/course/{id}")
-    public ResponseEntity<?> updateCourse(@PathVariable String id, @RequestBody String name, @RequestBody String teacher) {
-        return ok();
+            User user = userOpt.orElseThrow();
+            if (emailAddress != null) user.setEmail(emailAddress);
+            if (firstName != null) user.setFirstName(firstName);
+            if (lastName != null) user.setLastName(lastName);
+
+            this.userRepository.save(user);
+            return ok();
+        });
     }
 }

@@ -13,7 +13,7 @@ import java.util.UUID;
 
 @Table
 @Entity
-public class Student {
+public class User {
     @Id
     private UUID id;
     private String firstName;
