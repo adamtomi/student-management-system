@@ -1,5 +1,6 @@
 package com.vamk.backend.controller;
 
+import com.vamk.backend.model.PartialUser;
 import com.vamk.backend.model.User;
 import com.vamk.backend.repository.UserRepository;
 import org.slf4j.LoggerFactory;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.Optional;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 import static com.vamk.backend.util.response.CommonResponses.illegalUuid;
 import static com.vamk.backend.util.response.CommonResponses.notFound;
@@ -30,7 +32,7 @@ public class StudentController extends AbstractController {
 
     @GetMapping("/api/students")
     public ResponseEntity<?> getStudents() {
-        return wrap(() -> ok(this.userRepository.findAll()));
+        return wrap(() -> ok(this.userRepository.findAll().stream().map(PartialUser::of).collect(Collectors.toList())));
     }
 
     @GetMapping("/api/students/{id}")
@@ -43,7 +45,7 @@ public class StudentController extends AbstractController {
                 return illegalUuid(id);
             }
 
-            Optional<User> student = this.userRepository.findById(uuid);
+            Optional<PartialUser> student = this.userRepository.findById(uuid).map(PartialUser::of);
             return student.isEmpty()
                     ? notFound("student", id)
                     : ok(student.get());
