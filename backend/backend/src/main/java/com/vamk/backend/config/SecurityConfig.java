@@ -33,11 +33,10 @@ public class SecurityConfig {
     @Bean
     SecurityFilterChain filterChain(HttpSecurity security) throws Exception {
         return security.authorizeHttpRequests(auth ->
-                /*auth.requestMatchers("/api/students/{id}", "POST").hasAuthority(Role.ADMIN.name())
+                auth.requestMatchers("/api/students/{id}", "POST").hasAuthority(Role.ADMIN.name())
                         .requestMatchers("/api/course/{id}", "POST").hasAuthority(Role.ADMIN.name())
-                        .requestMatchers("/api/courses", "PUT").hasAuthority(Role.ADMIN.name())*/
-                        // auth.anyRequest().authenticated())
-                        auth.anyRequest().permitAll())
+                        .requestMatchers("/api/courses", "PUT").hasAuthority(Role.ADMIN.name())
+                        .anyRequest().authenticated())
                 .csrf(AbstractHttpConfigurer::disable)
                 .cors(Customizer.withDefaults())
                 .httpBasic(Customizer.withDefaults())
