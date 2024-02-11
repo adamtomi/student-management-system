@@ -1,9 +1,11 @@
 package com.vamk.backend.model;
 
+import com.vamk.backend.util.Role;
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.JoinTable;
 import jakarta.persistence.Table;
 
 import java.util.UUID;
@@ -16,11 +18,9 @@ public class User {
     private String firstName;
     private String lastName;
     private String email;
-    @JoinTable(name = "roles", joinColumns = @JoinColumn(name = "roleName"))
-    private String roleId;
-
-    @JoinTable(name = "roles", inverseJoinColumns = @JoinColumn(name = "roleId"))
-    private String roleName;
+    @Column(name = "roleId")
+    @Enumerated(EnumType.ORDINAL)
+    private Role role;
 
     public UUID getId() {
         return this.id;
@@ -54,19 +54,11 @@ public class User {
         this.email = email;
     }
 
-    public String getRole() {
-        return this.roleId;
+    public Role getRole() {
+        return this.role;
     }
 
-    public void setRole(String role) {
-        this.roleId = role;
-    }
-
-    public String getRoleName() {
-        return this.roleName;
-    }
-
-    public void setRoleName(String roleName) {
-        this.roleName = roleName;
+    public void setRole(Role role) {
+        this.role = role;
     }
 }
