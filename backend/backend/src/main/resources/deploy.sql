@@ -1,6 +1,6 @@
 -- Create 'students' table
 CREATE TABLE IF NOT EXISTS student_management.users (
-    id VARCHAR(36) NOT NULL PRIMARY KEY, -- AUTO_INCREMENT
+    id VARCHAR(36) NOT NULL PRIMARY KEY,
     firstName VARCHAR(255) NOT NULL,
     lastName VARCHAR(255) NOT NULL,
     email VARCHAR(255) NOT NULL,
@@ -9,7 +9,7 @@ CREATE TABLE IF NOT EXISTS student_management.users (
 
 -- Create 'courses' table
 CREATE TABLE IF NOT EXISTS student_management.courses (
-    id VARCHAR(255) NOT NULL PRIMARY KEY, -- INTEGER AUTO_INCREMENT
+    id VARCHAR(255) NOT NULL PRIMARY KEY,
     courseName VARCHAR(255) NOT NULL,
     teacherName VARCHAR(255) NOT NULL
 );
@@ -23,8 +23,6 @@ CREATE TABLE IF NOT EXISTS student_management.roles (
 
 -- Create 'enrollments' table
 CREATE TABLE IF NOT EXISTS student_management.enrollments (
-    -- userId INTEGER NOT NULL,
-    -- courseId INTEGER NOT NULL,
     userId VARCHAR(36) NOT NULL,
     courseId VARCHAR(36) NOT NULL,
     FOREIGN KEY (userId) REFERENCES student_management.users(id),
@@ -41,7 +39,7 @@ CREATE TABLE IF NOT EXISTS student_management.auth (
 -- Populate 'roles' table with some default values
 INSERT INTO student_management.roles (roleName) VALUES ('ADMIN'), ('STUDENT');
 
--- Populate 'users' table with a default user with admin privileges
+-- Populate 'users' table with a default user with admin privileges.
 INSERT INTO student_management.users (id, firstName, lastName, email, roleId) VALUES (
     'd4185a66-6b14-4371-bee3-8d298bb93557', 'John', 'Doe', 'test@example.com', (SELECT id FROM student_management.roles WHERE roleName = 'ADMIN')
 );
