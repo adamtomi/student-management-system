@@ -16,8 +16,11 @@ public class User {
     private String firstName;
     private String lastName;
     private String email;
-    /*@JoinTable(name = "role", joinColumns = @JoinColumn(name = "roleName"))
-    private String roleId;*/
+    @JoinTable(name = "roles", joinColumns = @JoinColumn(name = "roleName"))
+    private String roleId;
+
+    @JoinTable(name = "roles", inverseJoinColumns = @JoinColumn(name = "roleId"))
+    private String roleName;
 
     public UUID getId() {
         return this.id;
@@ -51,11 +54,19 @@ public class User {
         this.email = email;
     }
 
-    /*public String getRole() {
+    public String getRole() {
         return this.roleId;
     }
 
     public void setRole(String role) {
         this.roleId = role;
-    }*/
+    }
+
+    public String getRoleName() {
+        return this.roleName;
+    }
+
+    public void setRoleName(String roleName) {
+        this.roleName = roleName;
+    }
 }
