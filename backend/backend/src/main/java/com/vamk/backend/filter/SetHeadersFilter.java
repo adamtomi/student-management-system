@@ -11,6 +11,15 @@ import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.Map;
 
+/*
+ * I realize there are better methods for setting
+ * CORS headers (or configuring CORS in general),
+ * however none of those methods seemed to work
+ * just out of the box, and with the amount of time
+ * I had it made sense not to spend too much time
+ * on figuring out a better way to do this. This works,
+ * so I kept it.
+ */
 @WebFilter("/api/*")
 public class SetHeadersFilter implements Filter {
     private static final Map<String, String> CORS_HEADERS = Map.of(
