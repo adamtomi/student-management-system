@@ -13,10 +13,12 @@ import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
+import java.util.List;
+
 @EnableWebMvc
 @Configuration
 @EnableWebSecurity
-public class InterceptorConfigurer implements WebMvcConfigurer {
+public class GlobalConfig implements WebMvcConfigurer {
 
     // Register interceptors
     @Override
@@ -39,7 +41,6 @@ public class InterceptorConfigurer implements WebMvcConfigurer {
                         .requestMatchers("/api/*")
                         .hasAnyRole(Roles.ADMIN, Roles.STUDENT)
         )*/
-                // .cors(new CorsConfigurer<>())
                 .csrf(AbstractHttpConfigurer::disable)
                 .httpBasic(Customizer.withDefaults())
                 .build();
