@@ -24,9 +24,12 @@ public final class CommonResponses {
         return ok(null);
     }
 
+    public static ResponseEntity<?> badRequest(String message) {
+        return ResponseEntity.badRequest().body(failure(message));
+    }
+
     public static ResponseEntity<?> illegalUuid(String id) {
-        return ResponseEntity.badRequest()
-                .body(failure("The provided uuid ('%s') is invalid.".formatted(id)));
+        return badRequest("The provided uuid ('%s') is invalid.".formatted(id));
     }
 
     public static ResponseEntity<?> notFound(String type, String id) {
