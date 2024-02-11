@@ -2,6 +2,7 @@ import { useCallback, useEffect, useState } from 'react'
 import { Box, Input, Button, Spinner, Table, Thead, Tbody, Tr, Th, Td } from '@chakra-ui/react'
 import { useQuery } from '@tanstack/react-query'
 import { findStudent, getStudents } from '../api/student.ts'
+import { signin } from '../api/auth.ts'
 import type { Student } from '../types'
 
 export function StudentsTable() {
@@ -19,6 +20,17 @@ export function StudentsTable() {
     queryFn: () => findStudent(studentId),
     enabled: false
   })
+
+  const signinQuery = useQuery({
+    queryKey: [ 'signin' ],
+    queryFn: () => signin('test@example.com', 'admin')
+  })
+
+  useEffect(() => {
+    if (!signinQuery.isFetching) {
+      console.log(signinQuery.data)
+    }
+  }, [ signinQuery ])
 
   useEffect(() => {
     if (getStudentsQuery.isSuccess && getStudentsQuery.data.success) {
