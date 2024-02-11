@@ -18,7 +18,7 @@ import java.util.Optional;
 
 @Component
 public class AuthProvider implements AuthenticationProvider {
-    private static final String FAILURE_MSG = "Invalid email address or password";
+    private static final String INVALID_CREDENTIALS_MSG = "Invalid email address or password.";
     private final AuthRepository authRepository;
     private final UserRepository userRepository;
 
@@ -34,20 +34,19 @@ public class AuthProvider implements AuthenticationProvider {
         // Load login information
         Optional<AuthEntry> entry = this.authRepository.findByEmail(username);
         // If there is no entry with the provided email, reject.
-        if (entry.isEmpty()) throw new BadCredentialsException(FAILURE_MSG);
+        if (entry.isEmpty()) throw new BadCredentialsException(INVALID_CREDENTIALS_MSG);
 
         // Generate a SHA-512 hash for the password
         String password = Hash.sha512(authentication.getCredentials().toString());
 
         // Compare the two passwords. If they are not equal, reject.
-        if (!entry.orElseThrow().getPassword().equals(password)) throw new BadCredentialsException(FAILURE_MSG);
+        if (!entry.orElseThrow().getPassword().equals(password)) throw new BadCredentialsException(INVALID_CREDENTIALS_MSG);
 
         // Load roles for this user
         Optional<User> user = this.userRepository.findByEmail(username);
-        if (user.isEmpty()) throw new BadCredentialsException("WTF");
+        if (user.isEmpty()) throw new BadCredentialsException("An unexpected error occurred while signing in.");
 
         return new UsernamePasswordAuthenticationToken(username, password, List.of(user.orElseThrow().getRole()));
-
     }
 
     @Override
