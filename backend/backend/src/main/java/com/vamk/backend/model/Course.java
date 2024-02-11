@@ -24,6 +24,13 @@ public class Course {
     @JoinTable(name = "enrollments", joinColumns = @JoinColumn(name = "userId"))
     private Set<User> users;
 
+    public Course() {}
+
+    public Course(String name, String teacherName) {
+        this.name = name;
+        this.teacherName = teacherName;
+    }
+
     public UUID getId() {
         return this.id;
     }

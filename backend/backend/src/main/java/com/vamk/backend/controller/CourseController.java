@@ -8,6 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -28,7 +29,12 @@ public class CourseController extends AbstractController {
         this.courseRepository = courseRepository;
     }
 
-    @GetMapping("/api/course/{id}")
+    @GetMapping("/api/courses")
+    public ResponseEntity<?> getCourses() {
+        return wrap(() -> ok(this.courseRepository.findAll()));
+    }
+
+    @GetMapping("/api/courses/{id}")
     public ResponseEntity<?> getCourse(@PathVariable String id) {
         return wrap(() -> {
             UUID uuid;
@@ -45,7 +51,15 @@ public class CourseController extends AbstractController {
         });
     }
 
-    @PostMapping("/api/course/{id}")
+    @PutMapping("/api/courses")
+    public ResponseEntity<?> createCourse(@RequestBody String name, @RequestBody String teacherName) {
+        return wrap(() -> {
+            Course result = this.courseRepository.save(new Course(name, teacherName));
+            return ok(result.getId());
+        });
+    }
+
+    @PostMapping("/api/courses/{id}")
     public ResponseEntity<?> updateCourse(@PathVariable String id, @RequestBody String name, @RequestBody String teacher) {
         return wrap(() -> {
             UUID uuid;
