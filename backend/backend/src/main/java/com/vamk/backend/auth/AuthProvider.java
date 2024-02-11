@@ -1,8 +1,6 @@
 package com.vamk.backend.auth;
 
-import com.vamk.backend.model.AuthEntry;
 import com.vamk.backend.model.User;
-import com.vamk.backend.repository.AuthRepository;
 import com.vamk.backend.repository.UserRepository;
 import com.vamk.backend.util.Hash;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,34 +17,29 @@ import java.util.Optional;
 @Component
 public class AuthProvider implements AuthenticationProvider {
     private static final String INVALID_CREDENTIALS_MSG = "Invalid email address or password.";
-    private final AuthRepository authRepository;
     private final UserRepository userRepository;
 
     @Autowired
-    public AuthProvider(AuthRepository authRepository, UserRepository userRepository) {
-        this.authRepository = authRepository;
+    public AuthProvider(UserRepository userRepository) {
         this.userRepository = userRepository;
     }
 
     @Override
     public Authentication authenticate(Authentication authentication) throws AuthenticationException {
         String username = authentication.getName();
-        // Load login information
-        Optional<AuthEntry> entry = this.authRepository.findByEmail(username);
+        // Find user by email address.
+        Optional<User> userOpt = this.userRepository.findByEmail(username);
         // If there is no entry with the provided email, reject.
-        if (entry.isEmpty()) throw new BadCredentialsException(INVALID_CREDENTIALS_MSG);
+        if (userOpt.isEmpty()) throw new BadCredentialsException(INVALID_CREDENTIALS_MSG);
 
+        User user = userOpt.orElseThrow();
         // Generate a SHA-512 hash for the password
         String password = Hash.sha512(authentication.getCredentials().toString());
 
         // Compare the two passwords. If they are not equal, reject.
-        if (!entry.orElseThrow().getPassword().equals(password)) throw new BadCredentialsException(INVALID_CREDENTIALS_MSG);
+        if (!user.getPassword().equals(password)) throw new BadCredentialsException(INVALID_CREDENTIALS_MSG);
 
-        // Load roles for this user
-        Optional<User> user = this.userRepository.findByEmail(username);
-        if (user.isEmpty()) throw new BadCredentialsException("An unexpected error occurred while signing in.");
-
-        return new UsernamePasswordAuthenticationToken(username, password, List.of(user.orElseThrow().getRole()));
+        return new UsernamePasswordAuthenticationToken(username, password, List.of(user.getRole()));
     }
 
     @Override

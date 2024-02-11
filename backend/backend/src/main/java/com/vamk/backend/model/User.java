@@ -20,6 +20,7 @@ public class User {
     private String firstName;
     private String lastName;
     private String email;
+    private String password;
     @Column(name = "roleId")
     @Enumerated(EnumType.ORDINAL)
     private Role role;
@@ -54,6 +55,14 @@ public class User {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public String getPassword() {
+        return this.password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 
     public Role getRole() {
