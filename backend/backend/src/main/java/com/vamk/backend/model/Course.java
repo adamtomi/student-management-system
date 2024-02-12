@@ -1,12 +1,8 @@
 package com.vamk.backend.model;
 
 import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.JoinTable;
-import jakarta.persistence.ManyToMany;
 import jakarta.persistence.Table;
 
 import java.util.Set;
@@ -19,9 +15,6 @@ public class Course {
     private long id;
     private String name;
     private String teacherName;
-    @ManyToMany(fetch = FetchType.EAGER)
-    @JoinTable(name = "enrollments", joinColumns = @JoinColumn(name = "userId"))
-    private Set<User> users;
 
     public Course() {}
 
@@ -52,13 +45,5 @@ public class Course {
 
     public void setTeacherName(String teacherName) {
         this.teacherName = teacherName;
-    }
-
-    public Set<User> getUsers() {
-        return this.users;
-    }
-
-    public void setUser(Set<User> users) {
-        this.users = users;
     }
 }

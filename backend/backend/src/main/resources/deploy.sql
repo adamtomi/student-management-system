@@ -15,14 +15,6 @@ CREATE TABLE IF NOT EXISTS student_management.courses (
     teacherName VARCHAR(255) NOT NULL
 );
 
--- Create 'enrollments' table
-CREATE TABLE IF NOT EXISTS student_management.enrollments (
-    userId INTEGER NOT NULL,
-    courseId INTEGER NOT NULL,
-    FOREIGN KEY (userId) REFERENCES student_management.users(id),
-    FOREIGN KEY (courseId) REFERENCES student_management.courses(id)
-);
-
 -- Populate 'users' table with a default user with admin privileges.
 INSERT INTO student_management.users (firstName, lastName, email, password, roleId) VALUES (
     'John',
