@@ -7,7 +7,8 @@ public class SHA512PasswordEncoder implements PasswordEncoder {
 
     @Override
     public String encode(CharSequence rawPassword) {
-        return Hash.sha512(String.join(rawPassword, ""));
+        if (!(rawPassword instanceof String password)) throw new UnsupportedOperationException();
+        return Hash.sha512(password);
     }
 
     @Override

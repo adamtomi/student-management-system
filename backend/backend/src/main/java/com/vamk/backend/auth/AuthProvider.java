@@ -2,13 +2,13 @@ package com.vamk.backend.auth;
 
 import com.vamk.backend.model.User;
 import com.vamk.backend.repository.UserRepository;
-import com.vamk.backend.util.Hash;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -18,10 +18,12 @@ import java.util.Optional;
 public class AuthProvider implements AuthenticationProvider {
     private static final String INVALID_CREDENTIALS_MSG = "Invalid email address or password.";
     private final UserRepository userRepository;
+    private final PasswordEncoder passwordEncoder;
 
     @Autowired
-    public AuthProvider(UserRepository userRepository) {
+    public AuthProvider(UserRepository userRepository, PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
+        this.passwordEncoder = passwordEncoder;
     }
 
     @Override
@@ -34,7 +36,7 @@ public class AuthProvider implements AuthenticationProvider {
 
         User user = userOpt.orElseThrow();
         // Generate a SHA-512 hash for the password
-        String password = Hash.sha512(authentication.getCredentials().toString());
+        String password = this.passwordEncoder.encode(authentication.getCredentials().toString());
 
         // Compare the two passwords. If they are not equal, reject.
         if (!user.getPassword().equals(password)) throw new BadCredentialsException(INVALID_CREDENTIALS_MSG);
