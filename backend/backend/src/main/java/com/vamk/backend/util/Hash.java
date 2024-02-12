@@ -18,7 +18,7 @@ public final class Hash {
             byte[] bytes = MessageDigest.getInstance("SHA-512")
                     .digest(password.getBytes(StandardCharsets.UTF_8));
             StringBuilder builder = new StringBuilder();
-            // Convert each byte it's hex representation. Totally not copied from stackoverflow.
+            // Convert each byte to it's hex representation. Totally not copied from StackOverflow.
             for (byte each : bytes) builder.append(Integer.toString((each & 0xFF) + 0x100, 16).substring(1));
 
             return builder.toString();
