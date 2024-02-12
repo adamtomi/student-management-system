@@ -1,3 +1,8 @@
 .container {
     margin: 3rem;
 }
+
+.card {
+    border-radius: 8px;
+    border: 1px solid #777;
+}
