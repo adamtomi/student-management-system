@@ -27,19 +27,27 @@ export function StudentsTable() {
   })
 
   useEffect(() => {
-    if (!signinQuery.isFetching) {
+    if (signinQuery.isSuccess) {
+      console.log('isSuccess')
       console.log(signinQuery.data)
+      console.log('Refetching users...')
+      getStudentsQuery.refetch()
+    } else if (signinQuery.isError) {
+      console.log('isError')
+      console.log(signinQuery.error)
     }
-  }, [ signinQuery ])
+  }, [ signinQuery.isSuccess, signinQuery.isError, signinQuery.data, signinQuery.error ])
 
   useEffect(() => {
     if (getStudentsQuery.isSuccess && getStudentsQuery.data.success) {
+      console.log('get-student success')
       setStudents(getStudentsQuery.data.data)
     }
   }, [ getStudentsQuery.isSuccess, getStudentsQuery.data?.success ])
 
   useEffect(() => {
     if (findStudentQuery.isSuccess && findStudentQuery.data.success) {
+      console.log('find-student success')
       setSelectedStudent(findStudentQuery.data.data)
     }
   }, [ findStudentQuery.isSuccess, findStudentQuery.data?.success ])
