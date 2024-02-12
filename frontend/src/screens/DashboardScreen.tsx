@@ -1,6 +1,6 @@
 import { HStack } from '@chakra-ui/react'
-import { CoursesTable } from '../components/course/CoursesTable.tsx'
-import { StudentsTable } from '../components/student/StudentsTable.tsx'
+import { CoursesTable } from '../components/course/CoursesTable'
+import { StudentsTable } from '../components/student/StudentsTable'
 import './DashboardScreen.css'
 
 export function DashboardScreen() {

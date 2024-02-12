@@ -1,4 +1,4 @@
-import {doFetch, HttpMethod} from './api'
+import { doFetch, HttpMethod } from './api'
 import type { Student } from '../types'
 
 export async function signin(email: string, password: string) {

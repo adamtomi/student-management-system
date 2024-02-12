@@ -13,8 +13,8 @@ import {
   Td
 } from '@chakra-ui/react'
 import { useQuery } from '@tanstack/react-query'
-import { getStudents } from '../../api/student.ts'
-import { EditStudentModal } from './EditStudentModal.tsx'
+import { getStudents } from '../../api/student'
+import { EditStudentModal } from './EditStudentModal'
 import type { Student} from '../../types'
 
 export function StudentsTable() {

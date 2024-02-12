@@ -15,7 +15,7 @@ import {
 } from '@chakra-ui/react'
 import { useMutation } from '@tanstack/react-query'
 import { updateCourse } from '../../api/course'
-import { useToast } from '../../hooks/useToast.tsx'
+import { useToast } from '../../hooks/useToast'
 
 import type { Course } from '../../types'
 

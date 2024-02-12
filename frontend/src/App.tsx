@@ -21,7 +21,7 @@ function Navitagion() {
   )
 }
 
-export default function App() {
+export function App() {
   const queryClient = new QueryClient({
     defaultOptions: {
       queries: {

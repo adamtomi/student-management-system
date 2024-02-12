@@ -13,8 +13,8 @@ import {
   Td
 } from '@chakra-ui/react'
 import { useQuery } from '@tanstack/react-query'
-import { getCourses } from '../../api/course.ts'
-import { EditCourseModal } from './EditCourseModal.tsx'
+import { getCourses } from '../../api/course'
+import { EditCourseModal } from './EditCourseModal'
 
 import type { Course } from '../../types'
 

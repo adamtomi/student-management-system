@@ -1,4 +1,4 @@
-import { doFetch, HttpMethod } from './api.ts'
+import { doFetch, HttpMethod } from './api'
 import type { Student } from '../types'
 
 
