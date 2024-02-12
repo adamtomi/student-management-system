@@ -1,18 +1,21 @@
-package com.vamk.backend.util;
+package com.vamk.backend.util.crypto;
+
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
-public final class Hash {
-
-    private Hash() {}
+public final class SHA512PasswordEncoder implements PasswordEncoder {
 
     /*
      * This function returns the hexadecimal representation
      * of the SHA-512 hash of the provided password.
      */
-    public static String sha512(String password) {
+    @Override
+    public String encode(CharSequence rawPassword) {
+        if (!(rawPassword instanceof String password)) throw new UnsupportedOperationException();
+
         try {
             // Generate hash
             byte[] bytes = MessageDigest.getInstance("SHA-512")
@@ -25,5 +28,10 @@ public final class Hash {
         } catch (NoSuchAlgorithmException ex) {
             throw new RuntimeException(ex);
         }
+    }
+
+    @Override
+    public boolean matches(CharSequence rawPassword, String encodedPassword) {
+        return encode(rawPassword).equals(encodedPassword);
     }
 }

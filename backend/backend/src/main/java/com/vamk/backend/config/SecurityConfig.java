@@ -1,7 +1,7 @@
 package com.vamk.backend.config;
 
-import com.vamk.backend.security.SHA512PasswordEncoder;
 import com.vamk.backend.util.Role;
+import com.vamk.backend.util.crypto.SHA512PasswordEncoder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
