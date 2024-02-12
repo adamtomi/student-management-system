@@ -1,5 +1,6 @@
 package com.vamk.backend.config;
 
+import com.vamk.backend.security.SHA512PasswordEncoder;
 import com.vamk.backend.util.Role;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -7,6 +8,7 @@ import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
@@ -17,6 +19,11 @@ import java.util.List;
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig {
+
+    @Bean
+    PasswordEncoder passwordEncoder() {
+        return new SHA512PasswordEncoder();
+    }
 
     @Bean
     CorsConfigurationSource corsConfigurationSource() {
@@ -36,7 +43,8 @@ public class SecurityConfig {
                 auth.requestMatchers("/api/students/{id}", "POST").hasAuthority(Role.ADMIN.name())
                         .requestMatchers("/api/course/{id}", "POST").hasAuthority(Role.ADMIN.name())
                         .requestMatchers("/api/courses", "PUT").hasAuthority(Role.ADMIN.name())
-                        .anyRequest().authenticated())
+                        .anyRequest().permitAll()
+                )
                 .csrf(AbstractHttpConfigurer::disable)
                 .cors(Customizer.withDefaults())
                 .httpBasic(Customizer.withDefaults())
