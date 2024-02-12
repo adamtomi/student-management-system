@@ -5,14 +5,16 @@ CREATE TABLE IF NOT EXISTS student_management.users (
     lastName VARCHAR(255) NOT NULL,
     email VARCHAR(255) NOT NULL,
     password VARCHAR(255) NOT NULL,
-    roleId INTEGER NOT NULL
+    roleId INTEGER NOT NULL,
+    UNIQUE (email)
 );
 
 -- Create 'courses' table
 CREATE TABLE IF NOT EXISTS student_management.courses (
     id INTEGER AUTO_INCREMENT NOT NULL PRIMARY KEY,
     courseName VARCHAR(255) NOT NULL,
-    teacherName VARCHAR(255) NOT NULL
+    teacherName VARCHAR(255) NOT NULL,
+    UNIQUE (courseName)
 );
 
 -- Populate 'users' table with a default user with admin privileges.
