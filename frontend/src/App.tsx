@@ -4,16 +4,19 @@ import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom'
 import { DashboardScreen } from './screens/DashboardScreen'
 import { SignInScreen } from './screens/SignInScreen'
 import { SignUpScreen } from './screens/SignUpScreen'
+import './App.css'
 
 function Navitagion() {
   return (
     <BrowserRouter basename="/">
-      <Routes>
-        <Route path="/" element={<DashboardScreen />} />
-        <Route path="/signin" element={<SignInScreen />} />
-        <Route path="/signup" element={<SignUpScreen />} />
-        <Route path="*" element={<Navigate to="/" />} />
-      </Routes>
+      <div id="screen">
+        <Routes>
+          <Route path="/" element={<DashboardScreen />} />
+          <Route path="/signin" element={<SignInScreen />} />
+          <Route path="/signup" element={<SignUpScreen />} />
+          <Route path="*" element={<Navigate to="/" />} />
+        </Routes>
+      </div>
     </BrowserRouter>
   )
 }

@@ -9,6 +9,6 @@ export async function signin(email: string, password: string) {
   return doFetch({ endpoint: '/api/auth/signin', method: HttpMethod.POST, body: formData })
 }
 
-export async function signup(data: Omit<Student, 'id'>) {
+export async function signup(data: Omit<Student, 'id'> & { password: string }) {
   return doFetch({ endpoint: '/api/auth/signup', method: HttpMethod.POST, body: data })
 }
