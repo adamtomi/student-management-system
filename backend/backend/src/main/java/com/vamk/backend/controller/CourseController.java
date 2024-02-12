@@ -43,9 +43,9 @@ public class CourseController extends AbstractController {
     }
 
     @PutMapping("/api/courses")
-    public ResponseEntity<?> createCourse(@RequestBody String name, @RequestBody String teacherName) {
+    public ResponseEntity<?> createCourse(@RequestBody Course course) {
         return wrap(() -> {
-            Course result = this.courseRepository.save(new Course(name, teacherName));
+            Course result = this.courseRepository.save(new Course(course.getName(), course.getTeacherName()));
             return ok(result.getId());
         });
     }
@@ -53,16 +53,15 @@ public class CourseController extends AbstractController {
     @PostMapping("/api/courses/{id}")
     public ResponseEntity<?> updateCourse(
             @PathVariable long id,
-            @RequestBody(required = false) String name,
-            @RequestBody(required = false) String teacher
+            @RequestBody Course data
     ) {
         return wrap(() -> {
             Optional<Course> courseOpt = this.courseRepository.findById(id);
             if (courseOpt.isEmpty()) return notFound("course", id);
 
             Course course = courseOpt.orElseThrow();
-            if (name != null) course.setName(name);
-            if (teacher != null) course.setTeacherName(teacher);
+            if (data.getName() != null) course.setName(data.getName());
+            if (data.getTeacherName() != null) course.setTeacherName(data.getTeacherName());
 
             this.courseRepository.save(course);
             return ok();

@@ -46,18 +46,16 @@ public class StudentController extends AbstractController {
     @PostMapping("/api/students/{id}")
     public ResponseEntity<?> updateStudent(
             @PathVariable long id,
-            @RequestBody(required = false) String emailAddress,
-            @RequestBody(required = false) String firstName,
-            @RequestBody(required = false) String lastName
+            @RequestBody User data
     ) {
         return wrap(() -> {
             Optional<User> userOpt = this.userRepository.findById(id);
             if (userOpt.isEmpty()) return notFound("user", id);
 
             User user = userOpt.orElseThrow();
-            if (emailAddress != null) user.setEmail(emailAddress);
-            if (firstName != null) user.setFirstName(firstName);
-            if (lastName != null) user.setLastName(lastName);
+            if (data.getEmail() != null) user.setEmail(data.getEmail());
+            if (data.getFirstName() != null) user.setFirstName(data.getFirstName());
+            if (data.getLastName() != null) user.setLastName(data.getLastName());
 
             this.userRepository.save(user);
             return ok();
