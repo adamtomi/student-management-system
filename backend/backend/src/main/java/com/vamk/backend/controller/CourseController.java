@@ -60,7 +60,11 @@ public class CourseController extends AbstractController {
     }
 
     @PostMapping("/api/courses/{id}")
-    public ResponseEntity<?> updateCourse(@PathVariable String id, @RequestBody String name, @RequestBody String teacher) {
+    public ResponseEntity<?> updateCourse(
+            @PathVariable String id,
+            @RequestBody(required = false) String name,
+            @RequestBody(required = false) String teacher
+    ) {
         return wrap(() -> {
             UUID uuid;
             try {

@@ -55,9 +55,9 @@ public class StudentController extends AbstractController {
     @PostMapping("/api/students/{id}")
     public ResponseEntity<?> updateStudent(
             @PathVariable String id,
-            @RequestBody String emailAddress,
-            @RequestBody String firstName,
-            @RequestBody String lastName
+            @RequestBody(required = false) String emailAddress,
+            @RequestBody(required = false) String firstName,
+            @RequestBody(required = false) String lastName
     ) {
         return wrap(() -> {
             UUID uuid;
