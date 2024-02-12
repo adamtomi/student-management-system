@@ -13,10 +13,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.Optional;
-import java.util.UUID;
 import java.util.stream.Collectors;
 
-import static com.vamk.backend.util.response.CommonResponses.illegalUuid;
 import static com.vamk.backend.util.response.CommonResponses.notFound;
 import static com.vamk.backend.util.response.CommonResponses.ok;
 
@@ -36,16 +34,9 @@ public class StudentController extends AbstractController {
     }
 
     @GetMapping("/api/students/{id}")
-    public ResponseEntity<?> getStudent(@PathVariable String id) {
+    public ResponseEntity<?> getStudent(@PathVariable long id) {
         return wrap(() -> {
-            UUID uuid;
-            try {
-                uuid = UUID.fromString(id);
-            } catch (IllegalArgumentException ex) {
-                return illegalUuid(id);
-            }
-
-            Optional<PartialUser> student = this.userRepository.findById(uuid).map(PartialUser::of);
+            Optional<PartialUser> student = this.userRepository.findById(id).map(PartialUser::of);
             return student.isEmpty()
                     ? notFound("student", id)
                     : ok(student.get());
@@ -54,20 +45,13 @@ public class StudentController extends AbstractController {
 
     @PostMapping("/api/students/{id}")
     public ResponseEntity<?> updateStudent(
-            @PathVariable String id,
+            @PathVariable long id,
             @RequestBody(required = false) String emailAddress,
             @RequestBody(required = false) String firstName,
             @RequestBody(required = false) String lastName
     ) {
         return wrap(() -> {
-            UUID uuid;
-            try {
-                uuid = UUID.fromString(id);
-            } catch (IllegalArgumentException ex) {
-                return illegalUuid(id);
-            }
-
-            Optional<User> userOpt = this.userRepository.findById(uuid);
+            Optional<User> userOpt = this.userRepository.findById(id);
             if (userOpt.isEmpty()) return notFound("user", id);
 
             User user = userOpt.orElseThrow();

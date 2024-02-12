@@ -10,14 +10,13 @@ import jakarta.persistence.ManyToMany;
 import jakarta.persistence.Table;
 
 import java.util.Set;
-import java.util.UUID;
 
 @Entity
 @Table(name = "courses")
 public class Course {
     @Id
     @GeneratedValue
-    private UUID id;
+    private long id;
     private String name;
     private String teacherName;
     @ManyToMany(fetch = FetchType.EAGER)
@@ -31,11 +30,11 @@ public class Course {
         this.teacherName = teacherName;
     }
 
-    public UUID getId() {
+    public long getId() {
         return this.id;
     }
 
-    public void setId(UUID id) {
+    public void setId(long id) {
         this.id = id;
     }
 

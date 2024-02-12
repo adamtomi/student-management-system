@@ -9,14 +9,12 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 
-import java.util.UUID;
-
 @Entity
 @Table(name = "users")
 public class User {
     @Id
     @GeneratedValue
-    private UUID id;
+    private long id;
     private String firstName;
     private String lastName;
     private String email;
@@ -35,11 +33,11 @@ public class User {
         this.role = role;
     }
 
-    public UUID getId() {
+    public long getId() {
         return this.id;
     }
 
-    public void setId(UUID id) {
+    public void setId(long id) {
         this.id = id;
     }
 

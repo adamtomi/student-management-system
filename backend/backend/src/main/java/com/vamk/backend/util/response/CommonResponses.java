@@ -28,11 +28,7 @@ public final class CommonResponses {
         return ResponseEntity.badRequest().body(failure(message));
     }
 
-    public static ResponseEntity<?> illegalUuid(String id) {
-        return badRequest("The provided uuid ('%s') is invalid.".formatted(id));
-    }
-
-    public static ResponseEntity<?> notFound(String type, String id) {
+    public static ResponseEntity<?> notFound(String type, long id) {
         return ResponseEntity.status(HttpStatus.NOT_FOUND)
                 .body(failure("Resource '%s' with id '%s' was not found.".formatted(type, id)));
     }

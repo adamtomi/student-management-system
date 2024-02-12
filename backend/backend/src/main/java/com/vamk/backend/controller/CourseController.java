@@ -13,9 +13,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.Optional;
-import java.util.UUID;
 
-import static com.vamk.backend.util.response.CommonResponses.illegalUuid;
 import static com.vamk.backend.util.response.CommonResponses.notFound;
 import static com.vamk.backend.util.response.CommonResponses.ok;
 
@@ -35,16 +33,9 @@ public class CourseController extends AbstractController {
     }
 
     @GetMapping("/api/courses/{id}")
-    public ResponseEntity<?> getCourse(@PathVariable String id) {
+    public ResponseEntity<?> getCourse(@PathVariable long id) {
         return wrap(() -> {
-            UUID uuid;
-            try {
-                uuid = UUID.fromString(id);
-            } catch (IllegalArgumentException ex) {
-                return illegalUuid(id);
-            }
-
-            Optional<Course> course = this.courseRepository.findById(uuid);
+            Optional<Course> course = this.courseRepository.findById(id);
             return course.isEmpty()
                     ? notFound("course", id)
                     : ok(course.get());
@@ -61,19 +52,12 @@ public class CourseController extends AbstractController {
 
     @PostMapping("/api/courses/{id}")
     public ResponseEntity<?> updateCourse(
-            @PathVariable String id,
+            @PathVariable long id,
             @RequestBody(required = false) String name,
             @RequestBody(required = false) String teacher
     ) {
         return wrap(() -> {
-            UUID uuid;
-            try {
-                uuid = UUID.fromString(id);
-            } catch (IllegalArgumentException ex) {
-                return illegalUuid(id);
-            }
-
-            Optional<Course> courseOpt = this.courseRepository.findById(uuid);
+            Optional<Course> courseOpt = this.courseRepository.findById(id);
             if (courseOpt.isEmpty()) return notFound("course", id);
 
             Course course = courseOpt.orElseThrow();
