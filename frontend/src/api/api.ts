@@ -43,7 +43,7 @@ export async function doFetch<Result extends Record<string, any> = Record<string
   const response = await fetch(url, { method: method ?? HttpMethod.GET, headers, body: actualBody })
 
   const expected = expectedStatus ?? 200
-  if (response.status !== expected) throw new Error(`Expected stats '${expected}', got '${response.status}'`)
+  if (response.status !== expected) throw new Error(`Expected status '${expected}', got '${response.status}'`)
 
   return await response.json() as ApiResponseSuccess<Result>
 }
