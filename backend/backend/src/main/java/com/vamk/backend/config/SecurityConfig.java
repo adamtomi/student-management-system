@@ -4,6 +4,7 @@ import com.vamk.backend.security.SHA512PasswordEncoder;
 import com.vamk.backend.util.Role;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -40,9 +41,9 @@ public class SecurityConfig {
     @Bean
     SecurityFilterChain filterChain(HttpSecurity security) throws Exception {
         return security.authorizeHttpRequests(auth ->
-                auth.requestMatchers("/api/students/{id}", "POST").hasAuthority(Role.ADMIN.name())
-                        .requestMatchers("/api/course/{id}", "POST").hasAuthority(Role.ADMIN.name())
-                        .requestMatchers("/api/courses", "PUT").hasAuthority(Role.ADMIN.name())
+                auth.requestMatchers(HttpMethod.POST, "/api/students/{id}").hasAuthority(Role.ADMIN.name())
+                        .requestMatchers(HttpMethod.POST, "/api/courses/{id}").hasAuthority(Role.ADMIN.name())
+                        .requestMatchers(HttpMethod.PUT, "/api/courses").hasAuthority(Role.ADMIN.name())
                         .anyRequest().permitAll()
                 )
                 .csrf(AbstractHttpConfigurer::disable)
