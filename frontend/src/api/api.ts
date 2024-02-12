@@ -23,10 +23,11 @@ export interface FetchOptions {
   endpoint: string
   method?: HttpMethod
   body?: Record<string, unknown> | FormData
+  expectedStatus?: number
 }
 
 export async function doFetch<Result extends Record<string, any> = Record<string, any>>(options: FetchOptions): Promise<ApiResponse<Result>> {
-  const { endpoint, method, body } = options
+  const { endpoint, method, body, expectedStatus } = options
   const url = `${BASE_URL}${endpoint}`
   const headers = new Headers()
 
@@ -40,5 +41,9 @@ export async function doFetch<Result extends Record<string, any> = Record<string
     ? body instanceof FormData ? body : JSON.stringify(body)
     : undefined
   const response = await fetch(url, { method: method ?? HttpMethod.GET, headers, body: actualBody })
+
+  const expected = expectedStatus ?? 200
+  if (response.status !== expected) throw new Error(`Expected stats '${expected}', got '${response.status}'`)
+
   return await response.json() as ApiResponseSuccess<Result>
 }
