@@ -1,9 +1,14 @@
-import { doFetch, HttpMethod } from './api.ts'
+import {doFetch, HttpMethod} from './api'
+import type { Student } from '../types'
 
 export async function signin(email: string, password: string) {
   const formData = new FormData();
   formData.set('username', email)
   formData.set('password', password)
 
-  return doFetch({ endpoint: '/login', method: HttpMethod.POST, body: formData })
+  return doFetch({ endpoint: '/api/auth/signin', method: HttpMethod.POST, body: formData })
+}
+
+export async function signup(data: Omit<Student, 'id'>) {
+  return doFetch({ endpoint: '/api/auth/signup', method: HttpMethod.POST, body: data })
 }
