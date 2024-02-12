@@ -6,7 +6,8 @@ export default function App() {
   const queryClient = new QueryClient({
     defaultOptions: {
       queries: {
-        staleTime: 60 * 1000 // 1 minute
+        staleTime: 60 * 1000, // 1 minute
+        retry: 2
       }
     }
   })
