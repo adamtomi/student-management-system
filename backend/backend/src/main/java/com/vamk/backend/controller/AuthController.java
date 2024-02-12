@@ -28,12 +28,16 @@ public class AuthController extends AbstractController {
 
     @PostMapping("/api/auth/signup")
     public ResponseEntity<?> signup(
-            @RequestBody String firstName,
-            @RequestBody String lastName,
-            @RequestBody String email,
-            @RequestBody String password
+            @RequestBody User data
     ) {
         return wrap(() -> {
+            String email = data.getEmail();
+            String firstName = data.getFirstName();
+            String lastName = data.getLastName();
+            String password = data.getPassword();
+
+            if (email == null || firstName == null || lastName == null || password == null) return badRequest("Some required fields are missing.");
+
             Optional<User> existing = this.userRepository.findByEmail(email);
             if (existing.isPresent()) return badRequest("This email address is taken.");
 
