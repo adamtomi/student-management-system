@@ -44,6 +44,7 @@ public class SecurityConfig {
                 auth.requestMatchers(HttpMethod.POST, "/api/students/{id}").hasAuthority(Role.ADMIN.name())
                         .requestMatchers(HttpMethod.POST, "/api/courses/{id}").hasAuthority(Role.ADMIN.name())
                         .requestMatchers(HttpMethod.PUT, "/api/courses").hasAuthority(Role.ADMIN.name())
+                        .requestMatchers(HttpMethod.POST, "/api/courses/{id}/enroll/").hasAuthority(Role.ADMIN.name())
                         .anyRequest().permitAll()
                 )
                 .csrf(AbstractHttpConfigurer::disable)
