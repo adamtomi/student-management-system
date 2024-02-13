@@ -130,7 +130,7 @@ export function CoursesTable() {
       }
 
       {selectedModal === Modal.AddCourse &&
-        <AddCourseModal close={() => setSelectedModal(undefined)} course={selectedCourse} />
+        <AddCourseModal close={() => setSelectedModal(undefined)} />
       }
     </Fragment>
   )
