@@ -1,5 +1,6 @@
 import { useMutation } from '@tanstack/react-query'
 import { useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 import {
   Button,
   Card,
@@ -10,22 +11,22 @@ import {
   FormControl,
   FormLabel,
   Heading,
-  Input
+  Input,
+  Spinner,
+  Text
 } from '@chakra-ui/react'
 import { signin } from '../api/auth'
-import { useToast } from '../hooks/useToast'
 
 export function SignInScreen() {
   const [ email, setEmail ] = useState<string>('')
   const [ password, setPassword ] = useState<string>('')
 
-  const toast = useToast()
+  const navigate = useNavigate()
 
   const signInMutation = useMutation({
     mutationKey: [ 'auth', 'signin' ],
     mutationFn: () => signin(email, password),
-    onSuccess: () => toast.success("Success", "You've successfully logged in."),
-    onError: () => toast.error("Failure", "Failed to log you in.")
+    onSettled: () => navigate('/', { replace: true })
   })
 
   return (
@@ -52,7 +53,12 @@ export function SignInScreen() {
               onChange={e => setPassword(e.target.value)}
             />
           </FormControl>
-          <Button onClick={() => signInMutation.mutate()}>Sign in</Button>
+          <Button onClick={() => signInMutation.mutate()} disabled={signInMutation.isPending}>
+            {signInMutation.isPending
+              ? <Spinner />
+              : <Text>Sign in</Text>
+            }
+          </Button>
         </CardBody>
       </Card>
     </Container>

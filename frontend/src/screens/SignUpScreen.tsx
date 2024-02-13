@@ -10,7 +10,9 @@ import {
   FormControl,
   FormLabel,
   Heading,
-  Input
+  Input,
+  Spinner,
+  Text
 } from '@chakra-ui/react'
 import { signup } from '../api/auth'
 import { useToast } from '../hooks/useToast'
@@ -88,7 +90,12 @@ export function SignUpScreen() {
               onChange={e => setPasswordConfirm(e.target.value)}
             />
           </FormControl>
-          <Button onClick={() => signUp()}>Sign up</Button>
+          <Button onClick={() => signUp()} disabled={signUpMutation.isPending}>
+            {signUpMutation.isPending
+              ? <Spinner />
+              : <Text>Sign up</Text>
+            }
+          </Button>
         </CardBody>
       </Card>
     </Container>
