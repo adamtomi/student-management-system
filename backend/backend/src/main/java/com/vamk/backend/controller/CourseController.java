@@ -19,6 +19,7 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import static com.vamk.backend.util.response.CommonResponses.badRequest;
 import static com.vamk.backend.util.response.CommonResponses.notFound;
 import static com.vamk.backend.util.response.CommonResponses.ok;
 
@@ -94,7 +95,10 @@ public class CourseController extends AbstractController {
             if (userOpt.isEmpty()) return notFound("user", userId);
 
             Course course = courseOpt.orElseThrow();
-            course.getUsers().add(userOpt.orElseThrow());
+            User user = userOpt.orElseThrow();
+            if (course.getUsers().contains(user)) return badRequest("This student is already enrolled to this course.");
+
+            course.getUsers().add(user);
             this.courseRepository.save(course);
             return ok();
         });
