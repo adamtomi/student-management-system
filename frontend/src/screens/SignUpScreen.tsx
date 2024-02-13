@@ -1,5 +1,6 @@
 import { useMutation } from '@tanstack/react-query'
 import { useCallback, useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 import {
   Button,
   Card,
@@ -25,11 +26,15 @@ export function SignUpScreen() {
   const [ lastName, setLastName ] = useState<string>('')
 
   const toast = useToast()
+  const navigate = useNavigate()
 
   const signUpMutation = useMutation({
     mutationKey: [ 'auth', 'signup' ],
     mutationFn: () => signup({ email, password, firstName, lastName }),
-    onSuccess: () => toast.success("Success", "You've successfully sign up."),
+    onSuccess: () => {
+      navigate('/signin', { replace: true })
+      toast.success("Success", "You've successfully sign up.")
+    },
     onError: () => toast.error("Failure", "Failed to sign you up.")
   })
 
