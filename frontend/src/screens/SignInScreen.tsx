@@ -16,17 +16,26 @@ import {
   Text
 } from '@chakra-ui/react'
 import { signin } from '../api/auth'
+import { useToast } from '../hooks/useToast'
 
 export function SignInScreen() {
   const [ email, setEmail ] = useState<string>('')
   const [ password, setPassword ] = useState<string>('')
 
   const navigate = useNavigate()
+  const toast = useToast()
 
   const signInMutation = useMutation({
     mutationKey: [ 'auth', 'signin' ],
     mutationFn: () => signin(email, password),
-    onSettled: () => navigate('/', { replace: true })
+    onSettled: (_, error) => {
+      if (error) {
+        toast.error('Failure', 'Failed to log you in.')
+      } else {
+        navigate('/', { replace: true })
+        toast.success('Success', 'You\'ve logged in successfully.')
+      }
+    }
   })
 
   return (

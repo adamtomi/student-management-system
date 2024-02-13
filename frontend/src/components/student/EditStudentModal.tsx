@@ -38,10 +38,10 @@ export function EditStudentModal({ close, student }: EditStudentModalProps) {
       lastName,
       email
     }),
-    onError: () => toast.error("Failure", "Failed to update student data."),
+    onError: () => toast.error('Failure', 'Failed to update student data.'),
     onSuccess: () => {
       close()
-      toast.success("Success", "Successfully updated student data.")
+      toast.success('Success', 'Successfully updated student data.')
     }
   })
 
