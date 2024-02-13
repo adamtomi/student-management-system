@@ -65,7 +65,9 @@ export function EditStudentModal({ close, student }: EditStudentModalProps) {
               value={lastName}
               onChange={e => setLastName(e.target.value)}
             />
+          </FormControl>
 
+          <FormControl>
             <FormLabel>Email</FormLabel>
             <Input
               value={email}

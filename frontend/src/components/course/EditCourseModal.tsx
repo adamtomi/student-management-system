@@ -57,13 +57,16 @@ export function EditCourseModal({ close, course }: EditCourseModalProps) {
               value={courseName}
               onChange={e => setCourseName(e.target.value)}
             />
+          </FormControl>
 
+          <FormControl>
             <FormLabel>Teacher name</FormLabel>
             <Input
               value={teacherName}
               onChange={e => setTeacherName(e.target.value)}
             />
           </FormControl>
+
         </ModalBody>
 
         <ModalFooter gap={4}>
