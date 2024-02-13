@@ -1,9 +1,11 @@
 import { useCallback, useEffect, useState, Fragment } from 'react'
 import {
+  Button,
   Card,
   CardBody,
   CardHeader,
   Heading,
+  HStack,
   IconButton,
   Menu,
   MenuButton,
@@ -13,19 +15,22 @@ import {
   Table,
   Thead,
   Tbody,
+  Text,
   Tr,
   Th,
   Td
 } from '@chakra-ui/react'
-import { DotsThreeVertical } from 'phosphor-react'
+import { DotsThreeVertical, Plus } from 'phosphor-react'
 import { useQuery } from '@tanstack/react-query'
 import { getCourses } from '../../api/course'
+import { AddCourseModal } from './AddCourseModal'
 import { EditCourseModal } from './EditCourseModal'
 import { EnrollmentsModal } from './EnrollmentsModal'
 
 import type { Course } from '../../types'
 
 enum Modal {
+  AddCourse = 'AddCourse',
   EditCourse = 'EditCourse',
   EnrollStudents = 'EnrollStudents'
 }
@@ -53,7 +58,17 @@ export function CoursesTable() {
     <Fragment>
       <Card width="100%">
         <CardHeader>
-          <Heading size="md">Courses</Heading>
+          <Heading size="md">
+            <HStack gap={8}>
+              <Text>Courses</Text>
+              <Button onClick={() => setSelectedModal(Modal.AddCourse)}>
+                <HStack gap={3}>
+                  <Plus />
+                  <Text>Add course</Text>
+                </HStack>
+              </Button>
+            </HStack>
+          </Heading>
         </CardHeader>
         <CardBody>
           {getCoursesQuery.isFetching
@@ -112,6 +127,10 @@ export function CoursesTable() {
 
       {selectedModal === Modal.EnrollStudents && selectedCourse &&
         <EnrollmentsModal close={() => setSelectedModal(undefined)} course={selectedCourse} />
+      }
+
+      {selectedModal === Modal.AddCourse &&
+        <AddCourseModal close={() => setSelectedModal(undefined)} course={selectedCourse} />
       }
     </Fragment>
   )
