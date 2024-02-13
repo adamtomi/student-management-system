@@ -4,6 +4,11 @@ import {
   CardBody,
   CardHeader,
   Heading,
+  IconButton,
+  Menu,
+  MenuButton,
+  MenuItem,
+  MenuList,
   Spinner,
   Table,
   Thead,
@@ -12,16 +17,23 @@ import {
   Th,
   Td
 } from '@chakra-ui/react'
+import { DotsThreeVertical } from 'phosphor-react'
 import { useQuery } from '@tanstack/react-query'
 import { getCourses } from '../../api/course'
 import { EditCourseModal } from './EditCourseModal'
+import { EnrollmentsModal } from './EnrollmentsModal'
 
 import type { Course } from '../../types'
+
+enum Modal {
+  EditCourse = 'EditCourse',
+  EnrollStudents = 'EnrollStudents'
+}
 
 export function CoursesTable() {
   const [ courses, setCourses ] = useState<Course[]>([])
   const [ selectedCourse, setSelectedCourse ] = useState<Course | undefined>()
-  const [ isEditCourseModalOpen, setEditCourseModalOpen ] = useState<boolean>(false)
+  const [ selectedModal, setSelectedModal ] = useState<Modal | undefined>()
 
   const getCoursesQuery = useQuery({
     queryKey: [ 'courses-get' ],
@@ -32,10 +44,10 @@ export function CoursesTable() {
     if (getCoursesQuery.isSuccess && getCoursesQuery.data.success) setCourses(getCoursesQuery.data.data)
   }, [ getCoursesQuery.isSuccess, getCoursesQuery.data?.success ])
 
-  const openCourseModal = useCallback((course: Course) => {
+  const openModal = useCallback((course: Course, modal: Modal) => {
     setSelectedCourse(course)
-    setEditCourseModalOpen(true)
-  }, [ setSelectedCourse, setEditCourseModalOpen ])
+    setSelectedModal(modal)
+  }, [ setSelectedCourse, setSelectedModal ])
 
   return (
     <Fragment>
@@ -53,14 +65,38 @@ export function CoursesTable() {
                     <Th>ID</Th>
                     <Th>Name</Th>
                     <Th>Teacher name</Th>
+                    <Th isNumeric></Th>
                   </Tr>
                 </Thead>
                 <Tbody>
                   {courses.map(course => (
-                    <Tr key={course.id} onClick={() => openCourseModal(course)}>
+                    <Tr key={course.id}>
                       <Td>{course.id}</Td>
                       <Td>{course.name}</Td>
                       <Td>{course.teacherName}</Td>
+                      <Td isNumeric>
+                        <Menu>
+                          <MenuButton
+                            title="More"
+                            aria-label="More"
+                            as={IconButton}
+                            icon={<DotsThreeVertical />}
+                          >
+                          </MenuButton>
+                          <MenuList>
+                            <MenuItem
+                              onClick={() => openModal(course, Modal.EditCourse)}
+                            >
+                              Edit course
+                            </MenuItem>
+                            <MenuItem
+                              onClick={() => openModal(course, Modal.EnrollStudents)}
+                            >
+                              Enroll students
+                            </MenuItem>
+                          </MenuList>
+                        </Menu>
+                      </Td>
                     </Tr>
                   ))}
                 </Tbody>
@@ -69,8 +105,13 @@ export function CoursesTable() {
           }
         </CardBody>
       </Card>
-      {isEditCourseModalOpen && selectedCourse &&
-        <EditCourseModal close={() => setEditCourseModalOpen(false)} course={selectedCourse} />
+
+      {selectedModal === Modal.EditCourse && selectedCourse &&
+        <EditCourseModal close={() => setSelectedModal(undefined)} course={selectedCourse} />
+      }
+
+      {selectedModal === Modal.EnrollStudents && selectedCourse &&
+        <EnrollmentsModal close={() => setSelectedModal(undefined)} course={selectedCourse} />
       }
     </Fragment>
   )

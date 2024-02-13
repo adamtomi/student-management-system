@@ -36,10 +36,10 @@ export function EditCourseModal({ close, course }: EditCourseModalProps) {
       name: courseName,
       teacherName
     }),
-    onError: () => toast.error("Failure", "Failed to update course data."),
+    onError: () => toast.error('Failure', 'Failed to update course data.'),
     onSuccess: () => {
       close()
-      toast.success("Success", "Successfully updated course data.")
+      toast.success('Success', 'Successfully updated course data.')
     }
   })
 
