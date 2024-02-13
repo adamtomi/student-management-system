@@ -1,6 +1,7 @@
 package com.vamk.backend.controller;
 
 import com.vamk.backend.model.Course;
+import com.vamk.backend.model.PartialCourse;
 import com.vamk.backend.model.User;
 import com.vamk.backend.repository.CourseRepository;
 import com.vamk.backend.repository.UserRepository;
@@ -15,6 +16,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.Optional;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 import static com.vamk.backend.util.response.CommonResponses.notFound;
 import static com.vamk.backend.util.response.CommonResponses.ok;
@@ -33,7 +36,13 @@ public class CourseController extends AbstractController {
 
     @GetMapping("/api/courses")
     public ResponseEntity<?> getCourses() {
-        return wrap(() -> ok(this.courseRepository.findAll()));
+        return wrap(() -> {
+            Set<PartialCourse> courses = this.courseRepository.findAll()
+                    .stream()
+                    .map(PartialCourse::of)
+                    .collect(Collectors.toSet());
+            return ok(courses);
+        });
     }
 
     @GetMapping("/api/courses/{id}")
@@ -42,7 +51,7 @@ public class CourseController extends AbstractController {
             Optional<Course> course = this.courseRepository.findById(id);
             return course.isEmpty()
                     ? notFound("course", id)
-                    : ok(course.get());
+                    : ok(PartialCourse.of(course.orElseThrow()));
         });
     }
 
@@ -84,17 +93,9 @@ public class CourseController extends AbstractController {
             Optional<User> userOpt = this.userRepository.findById(userId);
             if (userOpt.isEmpty()) return notFound("user", userId);
 
-            /*Course course = courseOpt.orElseThrow();
+            Course course = courseOpt.orElseThrow();
             course.getUsers().add(userOpt.orElseThrow());
-            System.out.println(course.getUsers());*/
-            // userOpt.
-
-            User user = userOpt.orElseThrow();
-            user.getCourses().add(courseOpt.orElseThrow());
-            System.out.println(user.getCourses());
-
-            this.userRepository.save(user);
-            // this.courseRepository.save(course);
+            this.courseRepository.save(course);
             return ok();
         });
     }

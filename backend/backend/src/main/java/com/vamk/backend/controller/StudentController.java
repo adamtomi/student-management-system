@@ -30,7 +30,7 @@ public class StudentController extends AbstractController {
 
     @GetMapping("/api/students")
     public ResponseEntity<?> getStudents() {
-        return wrap(() -> ok(this.userRepository.findAll().stream().map(PartialUser::of).collect(Collectors.toList())));
+        return wrap(() -> ok(this.userRepository.findAll().stream().map(PartialUser::of).collect(Collectors.toSet())));
     }
 
     @GetMapping("/api/students/{id}")
@@ -39,7 +39,7 @@ public class StudentController extends AbstractController {
             Optional<PartialUser> student = this.userRepository.findById(id).map(PartialUser::of);
             return student.isEmpty()
                     ? notFound("student", id)
-                    : ok(student.get());
+                    : ok(student.orElseThrow());
         });
     }
 
