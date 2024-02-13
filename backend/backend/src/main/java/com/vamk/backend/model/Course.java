@@ -5,6 +5,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.ManyToMany;
 import jakarta.persistence.Table;
 
 import java.util.Set;
@@ -18,6 +19,9 @@ public class Course {
     @Column(name = "courseName")
     private String name;
     private String teacherName;
+
+    /*@ManyToMany(mappedBy = "courses")
+    private Set<User> users;*/
 
     public Course() {}
 
@@ -49,4 +53,12 @@ public class Course {
     public void setTeacherName(String teacherName) {
         this.teacherName = teacherName;
     }
+
+    /*public Set<User> getUsers() {
+        return this.users;
+    }
+
+    public void setUsers(Set<User> users) {
+        this.users = users;
+    }*/
 }

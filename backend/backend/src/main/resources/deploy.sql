@@ -1,3 +1,6 @@
+-- Create 'student_management' database
+CREATE DATABASE student_management;
+
 -- Create 'students' table
 CREATE TABLE IF NOT EXISTS student_management.users (
     id INTEGER AUTO_INCREMENT NOT NULL PRIMARY KEY,
@@ -15,6 +18,14 @@ CREATE TABLE IF NOT EXISTS student_management.courses (
     courseName VARCHAR(255) NOT NULL,
     teacherName VARCHAR(255) NOT NULL,
     UNIQUE (courseName)
+);
+
+-- Create 'enrollments' table
+CREATE TABLE IF NOT EXISTS student_management.enrollments (
+    userId INTEGER NOT NULL,
+    courseId INTEGER NOT NULL,
+    FOREIGN KEY(userId) REFERENCES users(id),
+    FOREIGN KEY(courseId) REFERENCES courses(id)
 );
 
 -- Populate 'users' table with a default user with admin privileges.
