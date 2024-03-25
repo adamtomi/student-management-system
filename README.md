@@ -11,3 +11,8 @@ A simple student management system needs to be created with the following requir
 - Make a decent looking UI for the project
 - Implement an API endpoint to list users enrolled to a given course
 - Implement an API endpoint to sign up users
+
+#
+
+### Notes
+Certain things (let's face it - almost everything) could be implemented in a better way especially on the frontend, where there's significant code duplication. But what the hell...
